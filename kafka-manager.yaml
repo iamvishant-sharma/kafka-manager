@@ -1,15 +1,26 @@
-kind: Service
-apiVersion: v1
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: kafka-manager
   namespace: test
 spec:
+  replicas: 1
   selector:
-    app: kafka-manager
-  type: NodePort
-  ports:
-    - port: 8080
-      targetPort: 80
-      nodePort: 30028
-  externalIPs:
-    - < externalIP >
+    matchLabels:
+      app: kafka-manager
+  template:
+    metadata:
+      labels:
+        app: kafka-manager
+    spec:
+      containers:
+      - name: kafka-manager
+        image: < docker-image >
+        ports:
+        - containerPort: 80
+        env:
+        - name: ZK_HOSTS
+          value: zk-svc.test:2181
+        command:
+        - ./bin/kafka-manager
+        - -Dhttp.port=80
