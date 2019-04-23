@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: kafka-manager
-        image: < docker-image >
+        image: < docker-image > #vishant07/kafka-manager:v1
         ports:
         - containerPort: 80
         env:
